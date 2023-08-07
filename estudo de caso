@@ -1,0 +1,106 @@
+Estudo de Caso: Desenvolvimento de um Aplicativo de Lista de Tarefas com React
+
+Neste estudo de caso, vamos explorar o desenvolvimento de um aplicativo de lista de tarefas utilizando a biblioteca React. Vamos criar um aplicativo simples que permitirá aos usuários adicionar, marcar como concluídas e remover tarefas de uma lista.
+
+Objetivo:
+Desenvolver um aplicativo de lista de tarefas interativo utilizando React, demonstrando conceitos fundamentais como componentes, estado e manipulação de eventos.
+
+Passos:
+
+Passo 1: Configuração do Ambiente
+Começaremos configurando um novo projeto React. Certifique-se de ter o Node.js e o npm (ou yarn) instalados em sua máquina.
+
+Crie um novo diretório para o projeto: mkdir lista-de-tarefas-app
+Navegue para o diretório: cd lista-de-tarefas-app
+Inicialize um novo projeto React: npx create-react-app .
+
+Passo 2: Estrutura do Aplicativo
+Vamos criar a estrutura básica do aplicativo, incluindo os componentes principais.
+
+No diretório src, crie um novo diretório chamado components.
+Dentro do diretório components, crie dois arquivos: TaskList.js e Task.js.
+
+Passo 3: Componente Task
+No arquivo Task.js, definiremos o componente Task, que representará cada tarefa na lista. O componente terá propriedades para o texto da tarefa e seu estado (concluída ou não).
+
+import React from 'react';
+
+const Task = ({ text, completed, onToggle, onDelete }) => {
+  return (
+    <div className={`task ${completed ? 'completed' : ''}`}>
+      <input type="checkbox" checked={completed} onChange={onToggle} />
+      <span>{text}</span>
+      <button onClick={onDelete}>Excluir</button>
+    </div>
+  );
+};
+
+export default Task;
+
+
+Passo 4: Componente TaskList
+No arquivo TaskList.js, definiremos o componente TaskList, que conterá a lista de tarefas e permitirá a interação com as tarefas.
+
+import React, { useState } from 'react';
+import Task from './Task';
+
+const TaskList = () => {
+  const [tasks, setTasks] = useState([
+    { id: 1, text: 'Fazer compras', completed: false },
+    { id: 2, text: 'Estudar React', completed: true },
+  ]);
+
+  const toggleTask = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div className="task-list">
+      {tasks.map((task) => (
+        <Task
+          key={task.id}
+          text={task.text}
+          completed={task.completed}
+          onToggle={() => toggleTask(task.id)}
+          onDelete={() => deleteTask(task.id)}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default TaskList;
+
+
+Passo 5: Integração no App Principal
+No arquivo src/App.js, integre o componente TaskList ao aplicativo principal.
+
+import React from 'react';
+import './App.css';
+import TaskList from './components/TaskList';
+
+function App() {
+  return (
+    <div className="app">
+      <h1>Lista de Tarefas</h1>
+      <TaskList />
+    </div>
+  );
+}
+
+export default App;
+
+
+Passo 6: Estilização
+Estilize o aplicativo conforme necessário. Você pode criar um arquivo CSS para definir estilos adicionais e personalizar a aparência do aplicativo.
+
+Conclusão:
+Neste estudo de caso, desenvolvemos um aplicativo de lista de tarefas simples utilizando React. Demonstramos a criação de componentes, manipulação de estado e interação entre componentes para construir uma funcionalidade completa. Você pode estender este projeto adicionando mais recursos, como a capacidade de adicionar novas tarefas, filtrar tarefas concluídas, etc. Este exemplo serve como base para aprender os princípios básicos do desenvolvimento React.
